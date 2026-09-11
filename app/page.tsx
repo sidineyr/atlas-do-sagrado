@@ -1,9 +1,12 @@
+import type { Metadata } from "next";
 import { ArrowRight, BookOpen, Clock3, Compass, Eye, ScrollText } from "lucide-react";
 import { CourseHeader } from "./components/course-header";
 import { ViewCounter } from "./components/view-counter";
 import { CertificateInvitation } from "./components/trail-progress";
 import { SiteFooter } from "./components/site-footer";
 import { modules } from "./course-data";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 export default function Home() {
   return (

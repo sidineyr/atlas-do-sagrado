@@ -4,6 +4,7 @@ import { CourseHeader } from "../components/course-header";
 import { SiteFooter } from "../components/site-footer";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/creditos" },
   title: "Créditos e fontes | Atlas do Sagrado",
   description: "Autoria, perfis e instituições que fundamentam o Atlas do Sagrado.",
 };

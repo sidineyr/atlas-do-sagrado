@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/certificado" },
   title: "Certificado simbólico | Atlas do Sagrado",
   description: "Acompanhe sua trilha e emita o certificado simbólico em PDF após visitar os oito módulos.",
 };

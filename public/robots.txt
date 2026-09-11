@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://atlas-do-sagrado.blubier.chatgpt.site/sitemap.xml
