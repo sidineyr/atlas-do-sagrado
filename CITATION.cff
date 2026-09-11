@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "Se este projeto for útil, cite-o usando estes metadados."
+title: "Atlas do Sagrado"
+type: software
+version: 1.1.0
+date-released: 2026-09-11
+authors:
+  - family-names: "Rodrigues"
+    given-names: "Sidiney"
+    affiliation: "Idealização e direção pedagógica"
+abstract: "MOOC aberto em português sobre história das religiões, não religião e filosofia."
+url: "https://atlas-do-sagrado.blubier.chatgpt.site"
+repository-code: "https://github.com/sidineyr/atlas-do-sagrado"
+keywords:
+  - história das religiões
+  - estudos da religião
+  - filosofia da religião
+  - educação aberta
+  - MOOC
+license: MIT
