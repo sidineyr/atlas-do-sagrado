@@ -14,6 +14,13 @@ export function SiteFooter({ compact = false }: { compact?: boolean }) {
         <a href="https://sidineyr.substack.com" target="_blank" rel="noreferrer"><Newspaper aria-hidden="true" size={16} />Substack</a>
         <Link href="/creditos">Créditos e fontes</Link>
       </nav>
-    </footer>
+    
+      <p style={{ width: '100%', marginTop: '0.65rem', fontSize: '0.75rem', lineHeight: 1.5, opacity: 0.72 }}>
+        Este projeto nasceu do desejo de ensinar e cuidar. Se ele tocou você,{' '}
+        <a href="https://pequenoprincipe.org.br/doadores/apoie-o-pequeno-principe/" target="_blank" rel="noopener noreferrer">
+          considere doar diretamente ao Hospital Pequeno Príncipe
+        </a>. Iniciativa voluntária, independente e sem intermediação financeira.
+      </p>
+</footer>
   );
 }
