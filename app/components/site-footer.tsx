@@ -12,6 +12,7 @@ export function SiteFooter({ compact = false }: { compact?: boolean }) {
         <a href="https://github.com/sidineyr" target="_blank" rel="noreferrer"><Code2 aria-hidden="true" size={16} />GitHub</a>
         <a href="https://www.linkedin.com/in/sidineyrodrigues" target="_blank" rel="noreferrer"><ContactRound aria-hidden="true" size={16} />LinkedIn</a>
         <a href="https://sidineyr.substack.com" target="_blank" rel="noreferrer"><Newspaper aria-hidden="true" size={16} />Substack</a>
+        <a href="https://sidineyr.github.io/" target="_blank" rel="noreferrer">Outros projetos educacionais</a>
         <Link href="/creditos">Créditos e fontes</Link>
       </nav>
     
