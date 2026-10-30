@@ -1,38 +1,18 @@
-import { getModule } from "../course-data";
-import { ExternalLink } from "lucide-react";
 import type { Metadata } from "next";
+import { ArrowUpRight } from "lucide-react";
 import { CourseHeader } from "../components/course-header";
 import { SiteFooter } from "../components/site-footer";
+import { modules } from "../course-data";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/creditos" },
-  title: "Créditos e fontes | Atlas do Sagrado",
-  description: "Autoria, perfis e instituições que fundamentam o Atlas do Sagrado.",
-};
-
-const references = [
-  ...(getModule("africa-americas-brasil")?.sources ?? []).map((source) => [source.title, source.url]),
-  ["OpenStax - World History, Volume 1", "https://openstax.org/books/world-history-volume-1/pages/1-introduction"],
-  ["OpenStax - World History, Volume 2", "https://openstax.org/details/books/world-history-volume-2"],
-  ["Stanford Encyclopedia of Philosophy - Philosophy of Religion", "https://plato.stanford.edu/entries/philosophy-religion/"],
-  ["Stanford Encyclopedia of Philosophy - Atheism and Agnosticism", "https://plato.stanford.edu/entries/atheism-agnosticism/"],
-  ["Internet Encyclopedia of Philosophy - Philosophy of Religion", "https://iep.utm.edu/religion/"],
-  ["Pew Research Center - Global Religious Landscape", "https://www.pewresearch.org/religion/2025/06/09/how-the-global-religious-landscape-changed-from-2010-to-2020/"],
-  ["The Metropolitan Museum of Art - Ancient Near Eastern Art", "https://www.metmuseum.org/toah/hd/ane/hd_ane.htm"],
-];
-
+export const metadata: Metadata = { alternates:{canonical:"/creditos"}, title:"Fontes e autoria | Atlas do Sagrado", description:"Biblioteca de referências, autoria e método do Atlas do Sagrado." };
 export default function CreditsPage() {
-  return (
-    <div className="site-shell">
-      <CourseHeader />
-      <main id="conteudo" tabIndex={-1} className="credits-page">
-        <header><p className="eyebrow">Transparência editorial</p><h1>Créditos e fontes</h1><p>Quem idealizou, quem criou e quais instituições fundamentam este percurso.</p></header>
-        <section><h2>Criação</h2><dl className="credit-roles"><div><dt>Idealização e direção pedagógica</dt><dd>Sidiney Rodrigues, pedagogo.</dd></div><div><dt>Criação e desenvolvimento</dt><dd>ChatGPT, a partir da orientação e curadoria de Sidiney Rodrigues.</dd></div><div><dt>Ícones de interface</dt><dd><a href="https://lucide.dev/" target="_blank" rel="noreferrer">Lucide Icons</a>, distribuídos sob licença ISC.</dd></div></dl></section>
-        <section><h2>Perfis do idealizador</h2><div className="profile-links"><a href="https://github.com/sidineyr" target="_blank" rel="noreferrer">GitHub <ExternalLink aria-hidden="true" size={15} /></a><a href="https://www.linkedin.com/in/sidineyrodrigues" target="_blank" rel="noreferrer">LinkedIn <ExternalLink aria-hidden="true" size={15} /></a><a href="https://sidineyr.substack.com" target="_blank" rel="noreferrer">Substack <ExternalLink aria-hidden="true" size={15} /></a></div></section>
-        <section><h2>Referências verificáveis</h2><p>O curso apresenta sínteses originais. Cada módulo indica suas fontes específicas; esta lista reúne as instituições consultadas.</p><ul className="reference-list">{references.map(([title, url]) => <li key={url}><a href={url} target="_blank" rel="noreferrer"><span>{title}</span><ExternalLink aria-hidden="true" size={16} /></a></li>)}</ul></section>
-        <aside className="editorial-note"><strong>Compromisso editorial</strong><p>O Atlas distingue evidência histórica, interpretação acadêmica e narrativa interna das tradições. Links são fornecidos para conferência; nenhuma fonte inexistente é criada para preencher lacunas.</p></aside>
-      </main>
-      <SiteFooter />
-    </div>
-  );
+  const count = new Set(modules.flatMap((module)=>module.sources.map((source)=>source.url))).size;
+  return <div className="site-shell"><CourseHeader/><main id="conteudo" tabIndex={-1} className="credits-page">
+    <header><p className="eyebrow">Uma biblioteca aberta à investigação</p><h1>Fontes, vozes<br/><em>e autoria.</em></h1><p>{count} referências únicas para consultar. Conheça quem criou o Atlas, de onde vêm suas leituras e quais limites acompanham cada recorte.</p></header>
+    <section><h2>Quem constrói este percurso</h2><dl className="credit-roles"><div><dt>Idealização e direção pedagógica</dt><dd>Sidiney Rodrigues, pedagogo.</dd></div><div><dt>Criação e desenvolvimento</dt><dd>ChatGPT, a partir da orientação e curadoria de Sidiney Rodrigues.</dd></div><div><dt>Interface e cartografia</dt><dd>Ícones <a href="https://lucide.dev/" target="_blank" rel="noopener noreferrer">Lucide</a>. Base cartográfica <a href="https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_110m_land.geojson" target="_blank" rel="noopener noreferrer">Natural Earth, land 1:110m</a>, simplificada para orientação visual.</dd></div></dl></section>
+    <section><h2>Como ler as referências</h2><p>Uma pesquisa acadêmica propõe interpretações; uma comunidade descreve sua experiência; um documento institucional registra um contexto; uma pesquisa demográfica organiza declarações e estimativas. Identifique o tipo de fonte antes de comparar suas respostas.</p><p>Os textos são sínteses introdutórias. Não representam todas as comunidades nem substituem suas vozes. A seleção cresce com o projeto; livros, artigos e documentos externos podem exigir outros idiomas ou leitura adicional.</p></section>
+    <section aria-labelledby="library-title"><p className="eyebrow">Por capítulo</p><h2 id="library-title">Continue a sua pesquisa.</h2><div className="reference-groups">{modules.map((module,i)=><details className="reference-group" key={module.slug}><summary>{String(i+1).padStart(2,"0")} · {module.title}<small>{module.sources.length} referências</small></summary><ul className="reference-list">{module.sources.map((source)=><li key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer" referrerPolicy="no-referrer"><span><small>{source.institution}</small><strong>{source.title}</strong></span><ArrowUpRight aria-hidden="true" size={17}/></a>{source.scope&&<p className="source-note">{source.scope}</p>}</li>)}</ul><a className="text-link" href={`/modulos/${module.slug}`}>Ler o capítulo</a></details>)}</div></section>
+    <section><h2>Encontre o idealizador</h2><div className="profile-links"><a href="https://github.com/sidineyr" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://www.linkedin.com/in/sidineyrodrigues" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a href="https://sidineyr.substack.com" target="_blank" rel="noopener noreferrer">Substack ↗</a></div></section>
+    <aside className="editorial-note"><strong>Um compromisso de método</strong><p>O Atlas distingue evidência histórica, interpretação acadêmica e narrativa de uma tradição. Respeitar pessoas não exige tornar todas as afirmações equivalentes. Uma boa pergunta também reconhece o que ainda não sabe.</p></aside>
+  </main><SiteFooter/></div>;
 }
