@@ -1,8 +1,11 @@
 import { env } from "cloudflare:workers";
+import { modules } from "../../course-data";
+import { allowedCounterPage } from "../../lib/request-validation";
+
+const validPages = ["inicio", ...modules.map((module) => module.slug)];
 
 function pageFrom(request: Request) {
-  const page = new URL(request.url).searchParams.get("page") ?? "";
-  return /^[a-z0-9-]{1,80}$/.test(page) ? page : null;
+  return allowedCounterPage(request.url, validPages);
 }
 
 export async function GET(request: Request) {

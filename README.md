@@ -39,7 +39,7 @@ O contador de leituras usa Cloudflare D1 em produção. A emissão do certificad
 
 ## Versão
 
-A revisão pedagógica e de UX de 29/10/2026 está documentada em [docs/revisao-ux-2026-10-29.md](docs/revisao-ux-2026-10-29.md).
+A revisão anterior está preservada como registro histórico. A nova interface e a revisão em time estão em [docs/redesign-atlas-2026-10-29.md](docs/redesign-atlas-2026-10-29.md).
 
 ## Estudo e progresso
 
@@ -60,3 +60,11 @@ pnpm build
 ```
 
 Os testes cobrem dados de progresso inválidos, visitas legadas, falhas de armazenamento, busca sem acentos e integridade de referências. O roteiro manual e suas limitações constam na revisão de UX.
+
+## Atlas editorial
+
+A interface organiza oito capítulos por percursos temáticos, mapa de entrada, busca e biblioteca de referências. Todos os capítulos receberam objetivos, vocabulário, novos exemplos com fontes e atividade. A seleção inclui autoria indígena, perspectiva comunitária sikh, estudos acadêmicos e não religião.
+
+A tradução é um link externo acionado pelo visitante: nenhum script do Google é carregado automaticamente. O certificado recebe nome por POST com limite de corpo e retorna PDF sem colocar o nome na URL. O contador é aproximado, aceita apenas páginas conhecidas e trata indisponibilidade sem bloquear leitura.
+
+Testes: `pnpm test:ux` executa os testes de UX e segurança. O PDF é declaratório e simbólico; o progresso permanece local.

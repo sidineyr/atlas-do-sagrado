@@ -1,27 +1,8 @@
-import { Code2, ContactRound, Newspaper } from "lucide-react";
-
-
-export function SiteFooter({ compact = false }: { compact?: boolean }) {
-  return (
-    <footer className={compact ? "footer compact-footer" : "footer"}>
-      <div>
-        <strong>Atlas do Sagrado</strong>
-        <p>Idealizado por Sidiney Rodrigues · Criado com ChatGPT.</p>
-      </div>
-      <nav className="footer-links" aria-label="Autoria e créditos">
-        <a href="https://github.com/sidineyr" target="_blank" rel="noreferrer"><Code2 aria-hidden="true" size={16} />GitHub</a>
-        <a href="https://www.linkedin.com/in/sidineyrodrigues" target="_blank" rel="noreferrer"><ContactRound aria-hidden="true" size={16} />LinkedIn</a>
-        <a href="https://sidineyr.substack.com" target="_blank" rel="noreferrer"><Newspaper aria-hidden="true" size={16} />Substack</a>
-        <a href="https://sidineyr.github.io/" target="_blank" rel="noreferrer">Outros projetos educacionais</a>
-        <a href="/creditos">Créditos e fontes</a>
-      </nav>
-    
-      <p style={{ width: '100%', marginTop: '0.65rem', fontSize: '0.75rem', lineHeight: 1.5, opacity: 0.72 }}>
-        Este projeto nasceu do desejo de ensinar e cuidar. Se ele tocou você,{' '}
-        <a href="https://pequenoprincipe.org.br/doadores/apoie-o-pequeno-principe/" target="_blank" rel="noopener noreferrer">
-          considere doar diretamente ao Hospital Pequeno Príncipe
-        </a>. Iniciativa voluntária, independente e sem intermediação financeira.
-      </p>
-</footer>
-  );
+import { Compass, ArrowUpRight } from "lucide-react";
+export function SiteFooter({compact=false}:{compact?:boolean}) {
+  return <footer className={compact?"footer compact-footer":"footer"}>
+    <div className="footer-main"><a className="brand" href="/"><span className="brand-mark"><Compass aria-hidden="true" size={22}/></span><span><strong>Atlas do Sagrado</strong><small className="brand-caption">Histórias, culturas e sentidos</small></span></a><p>Um convite a conhecer, perguntar e conviver.<br/>Idealizado por Sidiney Rodrigues · Criado com ChatGPT.</p></div>
+    <nav className="footer-links" aria-label="Autoria e créditos"><a href="/creditos">Fontes & autoria</a><a href="/certificado">Meu percurso</a><a href="https://github.com/sidineyr/atlas-do-sagrado" target="_blank" rel="noopener noreferrer">GitHub <ArrowUpRight aria-hidden="true" size={14}/></a><a href="https://www.linkedin.com/in/sidineyrodrigues" target="_blank" rel="noopener noreferrer">LinkedIn <ArrowUpRight aria-hidden="true" size={14}/></a><a href="https://sidineyr.substack.com" target="_blank" rel="noopener noreferrer">Substack <ArrowUpRight aria-hidden="true" size={14}/></a><a href="https://sidineyr.github.io/" target="_blank" rel="noopener noreferrer">Outros projetos educacionais <ArrowUpRight aria-hidden="true" size={14}/></a></nav>
+    <p className="footer-note">Este projeto nasceu do desejo de ensinar e cuidar. Se ele tocou você, <a href="https://pequenoprincipe.org.br/doadores/apoie-o-pequeno-principe/" target="_blank" rel="noopener noreferrer">considere doar diretamente ao Hospital Pequeno Príncipe</a>. Iniciativa voluntária, independente e sem intermediação financeira.</p>
+  </footer>;
 }

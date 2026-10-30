@@ -1,10 +1,17 @@
 import { buildCertificatePdf } from "../../lib/certificate-pdf";
+import { readCertificateName } from "../../lib/request-validation";
 
-export async function GET(request: Request) {
-  const name = (new URL(request.url).searchParams.get("name") ?? "").trim().replace(/\s+/g, " ");
-  if (name.length < 2 || name.length > 80) {
-    return Response.json({ error: "Informe um nome entre 2 e 80 caracteres." }, { status: 400 });
-  }
+export function GET() {
+  return Response.json({ error: "Use o formulário para gerar seu certificado sem colocar o nome no endereço." }, {
+    status: 405,
+    headers: { Allow: "POST", "Cache-Control": "no-store" },
+  });
+}
+
+export async function POST(request: Request) {
+  const result = await readCertificateName(request);
+  if (!result.ok) return Response.json({ error: result.error }, { status: result.status, headers: { "Cache-Control": "no-store" } });
+  const { name } = result;
 
   const now = new Date();
   const issuedOn = new Intl.DateTimeFormat("pt-BR", {
@@ -26,6 +33,7 @@ export async function GET(request: Request) {
       "Content-Type": "application/pdf",
       "Content-Disposition": `attachment; filename="certificado-atlas-do-sagrado-${safeName || "estudante"}.pdf"`,
       "Cache-Control": "no-store",
+      "X-Content-Type-Options": "nosniff",
     },
   });
 }

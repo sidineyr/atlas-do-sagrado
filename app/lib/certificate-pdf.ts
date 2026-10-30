@@ -50,7 +50,7 @@ export function buildCertificatePdf({
     "0.74 0.53 0.20 rg",
     centered(studentName, 286, Math.max(22, Math.min(34, 42 - studentName.length * 0.22)), "F2"),
     "0.09 0.08 0.17 rg",
-    centered("percorreu integralmente a trilha introdutória História das Religiões,", 238, 15),
+    centered("declarou concluir a trilha introdutória História das Religiões,", 238, 15),
     centered("composta por oito módulos de leitura autônoma, sem avaliação.", 212, 15),
     "0.74 0.53 0.20 RG 1 w 250 183 m 592 183 l S",
     centered(`Emitido em ${issuedOn}  |  Identificador ${certificateId}`, 150, 11),

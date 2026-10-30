@@ -12,12 +12,46 @@ import { modules } from "../course-data";
 export default function CertificatePage() {
   const completed = useCompletedModules();
   const [name, setName] = useState("");
+  const [downloading, setDownloading] = useState(false);
+  const [message, setMessage] = useState("");
   const ready = modules.every((module) => completed.includes(module.slug));
 
-  function download(event: FormEvent) {
+  async function download(event: FormEvent) {
     event.preventDefault();
-    if (!ready || name.trim().length < 2) return;
-    window.location.href = `/api/certificate?name=${encodeURIComponent(name.trim())}`;
+    if (!ready || downloading || name.trim().length < 2) return;
+    setDownloading(true);
+    setMessage("");
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 15000);
+    try {
+      const response = await fetch("/api/certificate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name.trim() }),
+        signal: controller.signal,
+      });
+      if (!response.ok) {
+        const details: unknown = await response.json().catch(() => null);
+        const error = details && typeof details === "object" ? (details as { error?: unknown }).error : null;
+        throw new Error(typeof error === "string" ? error : "Não foi possível gerar o certificado. Tente novamente.");
+      }
+      if (!response.headers.get("Content-Type")?.includes("application/pdf")) throw new Error("O certificado não foi recebido em PDF. Tente novamente.");
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "certificado-atlas-do-sagrado.pdf";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+      setMessage("PDF gerado. Confira os downloads do navegador.");
+    } catch (error) {
+      setMessage(error instanceof Error && error.name !== "AbortError" ? error.message : "A geração demorou mais que o esperado. Tente novamente.");
+    } finally {
+      window.clearTimeout(timeout);
+      setDownloading(false);
+    }
   }
 
   return (
@@ -41,8 +75,10 @@ export default function CertificatePage() {
 
         <form className="certificate-form" onSubmit={download}>
           <label htmlFor="student-name">Nome que aparecerá no certificado</label>
-          <input id="student-name" value={name} onChange={(event) => setName(event.target.value)} minLength={2} maxLength={80} required disabled={!ready} placeholder="Seu nome completo" />
-          <button type="submit" disabled={!ready || name.trim().length < 2}><Download aria-hidden="true" size={18} />Baixar certificado em PDF</button>
+          <input id="student-name" value={name} onChange={(event) => setName(event.target.value)} minLength={2} maxLength={80} required disabled={!ready || downloading} placeholder="Seu nome completo" autoComplete="name" aria-describedby="certificate-privacy" />
+          <button type="submit" disabled={!ready || downloading || name.trim().length < 2}><Download aria-hidden="true" size={18} />{downloading ? "Gerando certificado…" : "Baixar certificado em PDF"}</button>
+          <p role="status">{message}</p>
+          <p id="certificate-privacy">O nome é enviado ao servidor apenas para gerar o PDF, sem cadastro. Ele não é incluído no endereço da página.</p>
           <p>Documento gratuito e simbólico, sem equivalência acadêmica, carga horária certificada ou validade profissional.</p>
         </form>
       </main>

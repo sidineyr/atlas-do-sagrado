@@ -20,7 +20,6 @@ export const metadata: Metadata = {
     url: "/",
     type: "website",
     locale: "pt_BR",
-    alternateLocale: ["en_US"],
     siteName: "Atlas do Sagrado",
   },
   icons: {

@@ -1,16 +1,3 @@
-"use client";
-
-import { useEffect } from "react";
-
-declare global { interface Window { google?: { translate?: { TranslateElement: new (options: Record<string, unknown>, elementId: string) => unknown } }; googleTranslateElementInit?: () => void } }
-
 export function LanguageSelector() {
-  useEffect(() => {
-    window.googleTranslateElementInit = () => {
-      if (window.google?.translate && !document.querySelector("#google_translate_element select")) new window.google.translate.TranslateElement({ pageLanguage: "pt", includedLanguages: "pt,en", autoDisplay: false }, "google_translate_element");
-    };
-    if (window.google?.translate) window.googleTranslateElementInit();
-    else if (!document.querySelector("script[data-project-translate]")) { const script=document.createElement("script"); script.src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"; script.async=true; script.dataset.projectTranslate="true"; document.head.appendChild(script); }
-  }, []);
-  return <aside aria-label="Language / Idioma" className="language-bar"><strong style={{marginRight:8,fontSize:12,color:"var(--ink)"}}>PT / EN</strong><span id="google_translate_element" /></aside>;
+  return <aside className="language-bar" aria-label="Idioma"><span>Português · Brasil</span><a href="https://translate.google.com/translate?sl=pt&tl=en&u=https%3A%2F%2Fatlas-do-sagrado.blubier.chatgpt.site%2F" target="_blank" rel="noopener noreferrer" referrerPolicy="no-referrer">Read in English ↗ <span>(Google Translate externo)</span></a></aside>;
 }

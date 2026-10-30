@@ -1,3 +1,5 @@
+import { enrichments } from "./content-enrichment.ts";
+
 export type Source = { title: string; institution: string; url: string; scope?: string };
 export type CourseModule = {
   slug: string;
@@ -15,7 +17,7 @@ export type CourseModule = {
 
 const openStax = "Ann Kordas, Ryan J. Lynch, Brooke Nelson e Julie Tatlock — World History, Volume 1 (2023)";
 
-export const modules: CourseModule[] = [
+const originalModules: CourseModule[] = [
   {
     slug: "onde-tudo-comeca",
     title: "Onde tudo começa?",
@@ -54,7 +56,7 @@ export const modules: CourseModule[] = [
     title: "Tradições do Sul e do Leste da Ásia",
     era: "c. 1500 a.C.–700 d.C.",
     summary: "Tradições védicas, hinduísmos, budismos, jainismo, confucionismo, daoismo e xintoísmo.",
-    opening: "“Oriente” é um rótulo amplo criado a partir de um ponto de vista europeu. Aqui ele é substituído, sempre que possível, por regiões e tradições específicas.",
+    opening: "Do Sul da Ásia ao Japão, textos, práticas, comunidades e ideias circularam por muitos caminhos. Conheça tradições com histórias próprias, seus encontros e suas diferenças internas.",
     sections: [
       { title: "Sul da Ásia", paragraphs: ["Textos védicos, práticas rituais e debates sobre ação, renascimento e libertação formaram ambientes dos quais emergiram tradições hoje reunidas sob o nome hinduísmo. Budismo e jainismo também nasceram nesse campo histórico, propondo caminhos distintos diante do sofrimento e do ciclo de renascimentos.", "Hinduísmo e budismo são famílias internamente diversas, não sistemas uniformes. Seus conceitos mudam conforme escola, época, língua e região."] },
       { title: "China", paragraphs: ["Confucionismo enfatizou cultivo moral, relações, educação e ordem social; daoismo reuniu textos, práticas e instituições em torno do Dao e de modos de viver em consonância com ele. Na história chinesa, essas tradições interagiram entre si e com o budismo."] },
@@ -75,7 +77,7 @@ export const modules: CourseModule[] = [
     sections: [
       { title: "Judaísmos", paragraphs: ["A religião israelita antiga se transformou ao longo de reinos, exílios, reconstruções e diásporas. Após a destruição do Segundo Templo em 70 d.C., tradições rabínicas ganharam centralidade. Falar em “judaísmos” recorda a diversidade histórica e contemporânea."] },
       { title: "Cristianismos", paragraphs: ["O cristianismo surgiu no ambiente judaico do século I. Comunidades espalhadas pelo Mediterrâneo interpretaram a vida, morte e ressurreição de Jesus e produziram diferentes textos e práticas. Concílios, impérios, cismas e reformas moldaram múltiplos cristianismos."] },
-      { title: "Islãs", paragraphs: ["O islã surgiu na Arábia do século VII em torno das revelações proclamadas por Muhammad e preservadas no Alcorão. Expansões políticas não equivalem automaticamente a conversão religiosa. Tradições sunitas, xiitas, sufis e outras mostram sua diversidade interna."] },
+      { title: "Islãs", paragraphs: ["O islã surgiu na Arábia do século VII em torno das revelações proclamadas por Muhammad e preservadas no Alcorão. Expansões políticas não equivalem automaticamente a conversão religiosa. Tradições sunitas e xiitas têm diferentes interpretações; movimentos sufis atravessam essas divisões. O islã também se desenvolveu para além do mundo árabe."] },
       { title: "Comparar sem hierarquizar", paragraphs: ["“Religiões abraâmicas” é uma categoria útil para certos vínculos, mas pode esconder diferenças centrais. Cada tradição deve ser compreendida também por seus próprios conceitos, práticas e memórias."] }
     ],
     pause: "Compartilhar personagens e narrativas significa atribuir a eles o mesmo sentido?",
@@ -125,7 +127,7 @@ export const modules: CourseModule[] = [
     {
       "title": "Tradições africanas: começar por um exemplo",
       "paragraphs": [
-        "Em comunidades iorubás, o sistema de Ifá articula sinais e um repertório de versos interpretados por especialistas. A UNESCO o reconhece como patrimônio cultural imaterial. Esse caso mostra uma tradição de conhecimento transmitida e praticada em contextos específicos.",
+        "Em comunidades iorubás, o sistema de Ifá articula sinais e um repertório de versos interpretados por especialistas. O documental de Tunde Kelani, produzido pelo Ifa Group of Oyo em 2004, apresenta esse contexto. Esse caso mostra uma tradição de conhecimento transmitida e praticada em contextos específicos.",
         "Ifá não representa toda a África. Investigar uma tradição exige identificar comunidade, região, época e formas de transmissão. Não é adequado reunir experiências tão diversas sob a expressão “religião africana” como se fossem uma unidade."
       ],
       "sourceIndexes": [
@@ -265,6 +267,39 @@ export const modules: CourseModule[] = [
     ]
   }
 ];
+
+export const modules: CourseModule[] = originalModules.map((module) => {
+  const extra = enrichments[module.slug];
+  if (!extra) return module;
+  const sources = [...module.sources];
+  if (module.slug === "africa-americas-brasil") {
+    sources[0] = { title: "Ifa of the Yoruba People of Nigeria (2004)", institution: "Tunde Kelani / Ifa Group of Oyo · Arquivo UNESCO", url: "https://www.unesco.org/archives/multimedia/document-3742", scope: "Texto de apresentação e documental sobre o sistema de Ifá em contextos iorubás." };
+  }
+  if (module.slug === "religiao-no-mundo-antigo") {
+    const old = sources.findIndex((source) => source.url.includes("/toah/hd/ane/"));
+    if (old >= 0) sources[old] = { title: "Mesopotamian Deities", institution: "Ira Spar · The Metropolitan Museum of Art, 2009", url: "https://www.metmuseum.org/essays/mesopotamian-deities" };
+  }
+
+  const newSections = extra.sections.filter((section) => !(module.slug === "africa-americas-brasil" && section.title === "Ifá: conhecimento em contexto")).map((section) => ({
+    title: section.title,
+    paragraphs: section.paragraphs,
+    sourceIndexes: section.sources.map((source) => {
+      const existing = sources.findIndex((item) => item.url === source.url);
+      if (existing >= 0) return existing;
+      sources.push(source);
+      return sources.length - 1;
+    }),
+  }));
+  return {
+    ...module,
+    ...(module.slug === "tradicoes-do-oriente" ? { era: "Antiguidade–presente", summary: "Hinduísmos, budismos, jainismo, Sikhi, confucionismo, daoismo e xintoísmo." } : {}),
+    objectives: extra.objectives,
+    glossary: [...(module.glossary ?? []), ...extra.glossary.filter((entry) => !module.glossary?.some((old) => old.term === entry.term))],
+    sections: [...module.sections, ...newSections],
+    activity: extra.activity,
+    sources,
+  };
+});
 
 export function getModule(slug: string) {
   return modules.find((module) => module.slug === slug);
