@@ -290,3 +290,44 @@ h1, h2, h3 { font-family: Georgia, "Times New Roman", serif; line-height: 1.08; 
   html { scroll-behavior: auto; }
   * { transition: none !important; }
 }
+
+/* Reading, keyboard access and narrow/zoomed viewports. */
+:where(a, button, summary, input):focus-visible { outline: 3px solid #4d3f88; outline-offset: 4px; }
+[id] { scroll-margin-top: 100px; }
+.skip-link { position: fixed; top: 8px; left: 12px; z-index: 100; background: var(--white); padding: 12px 18px; transform: translateY(-160%); }
+.skip-link:focus { transform: translateY(0); }
+.mobile-menu summary { min-width: 44px; min-height: 44px; align-items: center; justify-content: center; }
+.mobile-menu a { display: block; min-height: 44px; padding: 8px; }
+.catalog-search { margin-bottom: 28px; }
+.catalog-search label { display: block; font-weight: 800; }
+.catalog-search p { color: var(--ink-soft); margin: 8px 0; }
+.catalog-search input { display: block; width: 100%; max-width: 620px; padding: 12px; border: 1px solid var(--ink-soft); background: var(--white); color: var(--ink); font: inherit; margin: 12px 0; }
+button.primary-action { border: 0; cursor: pointer; font: inherit; font-weight: 800; white-space: normal; text-align: left; }
+button.secondary-action { cursor: pointer; background: var(--white); color: var(--ink); }
+.study-guide, .completion-card { border: 1px solid var(--line); padding: 24px; background: var(--white); margin: 36px 0; }
+.completion-card h2 { font-size: 28px; font-weight: 500; margin-top: 0; }
+.study-guide h3 { font-size: 22px; }
+.lesson-glossary { margin: 0; }
+.lesson-glossary div { border-bottom: 1px solid var(--line); padding: 14px 0; }
+.lesson-glossary dt { font-weight: 800; }
+.lesson-glossary dd { margin: 4px 0 0; color: var(--ink-soft); }
+.section-citations { display: grid; gap: 4px; font-size: 14px !important; }
+.activity-feedback { border: 1px solid var(--line); padding: 16px; }
+.activity-feedback summary { cursor: pointer; font-weight: 700; }
+.activity-feedback p { margin-top: 16px; }
+.lesson-content, .credits-page, .footer, .module-body { overflow-wrap: anywhere; }
+.sources a span { min-width: 0; }
+.sources a svg { flex-shrink: 0; }
+.footer { flex-wrap: wrap; gap: 20px; }
+.footer > * { min-width: 0; }
+@media (max-width: 620px) {
+  .brand { font-size: clamp(16px, 5vw, 20px); gap: 7px; }
+  .brand-mark { flex-shrink: 0; }
+  .course-header { gap: 8px; }
+  .course-note { margin-right: 8px; }
+  .course-note dl div { flex-wrap: wrap; gap: 4px 12px; }
+  .module-time { white-space: normal; }
+  .study-guide, .completion-card { padding: 18px; }
+}
+
+.language-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px; padding: 8px 18px; background: var(--paper-deep); color: var(--ink); }

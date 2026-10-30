@@ -1,14 +1,16 @@
-export type Source = { title: string; institution: string; url: string };
+export type Source = { title: string; institution: string; url: string; scope?: string };
 export type CourseModule = {
   slug: string;
   title: string;
   era: string;
-  minutes: number;
   summary: string;
   opening: string;
-  sections: { title: string; paragraphs: string[]; points?: string[] }[];
+  sections: { title: string; paragraphs: string[]; points?: string[]; sourceIndexes?: number[] }[];
   pause: string;
   sources: Source[];
+  objectives?: string[];
+  glossary?: { term: string; definition: string }[];
+  activity?: { prompt: string; feedback: string };
 };
 
 const openStax = "Ann Kordas, Ryan J. Lynch, Brooke Nelson e Julie Tatlock — World History, Volume 1 (2023)";
@@ -18,7 +20,6 @@ export const modules: CourseModule[] = [
     slug: "onde-tudo-comeca",
     title: "Onde tudo começa?",
     era: "Pré-história e método",
-    minutes: 25,
     summary: "Vestígios, ritos funerários e os limites do que a arqueologia permite dizer.",
     opening: "Antes de existirem templos, livros ou a palavra religião, seres humanos já enterravam mortos, criavam imagens e marcavam lugares. Esses vestígios sugerem mundos simbólicos, mas não autorizam uma resposta simples sobre a primeira crença.",
     sections: [
@@ -35,7 +36,6 @@ export const modules: CourseModule[] = [
     slug: "religiao-no-mundo-antigo",
     title: "Religião no mundo antigo",
     era: "c. 3500 a.C.–500 a.C.",
-    minutes: 30,
     summary: "Cidades, impérios, ancestrais, divindades e a escrita do sagrado.",
     opening: "Com a urbanização, ritos e narrativas passaram a ocupar templos, calendários, códigos e administrações. Isso não criou a religião, mas tornou parte dela mais visível para a história.",
     sections: [
@@ -53,7 +53,6 @@ export const modules: CourseModule[] = [
     slug: "tradicoes-do-oriente",
     title: "Tradições do Sul e do Leste da Ásia",
     era: "c. 1500 a.C.–700 d.C.",
-    minutes: 35,
     summary: "Tradições védicas, hinduísmos, budismos, jainismo, confucionismo, daoismo e xintoísmo.",
     opening: "“Oriente” é um rótulo amplo criado a partir de um ponto de vista europeu. Aqui ele é substituído, sempre que possível, por regiões e tradições específicas.",
     sections: [
@@ -71,7 +70,6 @@ export const modules: CourseModule[] = [
     slug: "judaismo-cristianismo-isla",
     title: "Judaísmo, cristianismo e islã",
     era: "c. 1000 a.C.–1500 d.C.",
-    minutes: 40,
     summary: "Três histórias ligadas, sem reduzir uma tradição à continuação da outra.",
     opening: "Judaísmo, cristianismo e islã compartilham personagens, textos e territórios de memória. Essa proximidade produziu diálogos, disputas e interpretações diferentes — não uma linha evolutiva simples.",
     sections: [
@@ -87,28 +85,137 @@ export const modules: CourseModule[] = [
     ]
   },
   {
-    slug: "africa-americas-brasil",
-    title: "África, Américas e Brasil",
-    era: "Longa duração–presente",
-    minutes: 35,
-    summary: "Ancestralidade, território, colonialismo e religiões afro-brasileiras.",
-    opening: "Muitas histórias da religião foram escritas como se Europa e textos fossem o centro. Este módulo desloca o olhar para oralidade, território, corpo, ancestralidade e para os efeitos violentos da colonização.",
-    sections: [
-      { title: "Tradições africanas", paragraphs: ["O continente africano abriga enorme diversidade linguística, histórica e religiosa. Relações com ancestrais, forças, divindades e comunidades assumem formas específicas; “religião africana” no singular é uma generalização inadequada."] },
-      { title: "Povos originários das Américas", paragraphs: ["Cosmologias indígenas vinculam pessoas, outros seres, território e memória de modos que nem sempre cabem na separação ocidental entre religião, natureza e política. A colonização destruiu populações, proibiu práticas e reinterpretou mundos indígenas por categorias cristãs."] },
-      { title: "Brasil: encontro, coerção e criação", paragraphs: ["Catolicismos, protestantismos, espiritismos, tradições indígenas, judaísmo, islã, budismos, novas religiões e posições sem religião compõem o campo brasileiro. Candomblé e Umbanda preservam e recriam heranças africanas em condições marcadas por escravização, racismo e resistência.", "Sincretismo pode descrever encontros e recomposições, mas não deve apagar coerção nem a agência das comunidades. Dados censitários medem declaração de pertencimento; não capturam toda prática, dupla pertença ou circulação religiosa."] }
-    ],
-    pause: "Quem ganha e quem perde quando apenas tradições com livros e instituições centralizadas são tratadas como religiões completas?",
-    sources: [
-      { title: "Censo 2022: católicos seguem em queda; evangélicos e sem religião crescem", institution: "IBGE · Agência de Notícias", url: "https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/43593-censo-2022-catolicos-seguem-em-queda-evangelicos-e-sem-religiao-crescem-no-pais" },
-      { title: "Iphan celebra 40 anos de tombamento do Terreiro da Casa Branca", institution: "IPHAN · Governo Federal", url: "https://www.gov.br/iphan/pt-br/assuntos/noticias/iphan-celebra-40-anos-de-tombamento-do-terreiro-da-casa-branca-ba" }
-    ]
+  "slug": "africa-americas-brasil",
+  "title": "África, Américas e Brasil",
+  "era": "Longa duração–presente",
+  "summary": "Ancestralidade, território, colonialismo e religiões afro-brasileiras.",
+  "opening": "Este módulo aproxima histórias africanas, indígenas e brasileiras por meio de exemplos situados. O recorte não representa todos os povos desses continentes: observe quem fala, de qual lugar e em que momento.",
+  "objectives": [
+    "Reconhecer a diversidade interna das tradições e evitar explicações únicas.",
+    "Distinguir Candomblé e Umbanda sem estabelecer hierarquia entre elas.",
+    "Relacionar um exemplo às fontes e apontar o que elas não permitem concluir."
+  ],
+  "glossary": [
+    {
+      "term": "Cosmologia",
+      "definition": "Modo de compreender a organização do mundo e as relações entre seres, lugares e tempos. Cada povo elabora suas próprias concepções."
+    },
+    {
+      "term": "Ancestralidade",
+      "definition": "Relação com gerações anteriores e suas memórias, que pode envolver parentesco, pertencimento e práticas religiosas."
+    },
+    {
+      "term": "Diáspora africana",
+      "definition": "Dispersão de populações africanas e formação de comunidades fora da África, incluindo deslocamentos forçados pela escravização."
+    },
+    {
+      "term": "Sincretismo",
+      "definition": "Termo usado para estudar aproximações e recomposições entre tradições. Não significa que elas sejam idênticas nem que os encontros tenham sido livres de violência."
+    },
+    {
+      "term": "Agência das comunidades",
+      "definition": "Capacidade de pessoas e grupos de agir, escolher e recriar práticas, mesmo sob condições de dominação."
+    },
+    {
+      "term": "Terreiro",
+      "definition": "Espaço de culto, convivência e transmissão de conhecimentos em diversas tradições afro-brasileiras; suas formas variam."
+    }
+  ],
+  "sections": [
+    {
+      "title": "Tradições africanas: começar por um exemplo",
+      "paragraphs": [
+        "Em comunidades iorubás, o sistema de Ifá articula sinais e um repertório de versos interpretados por especialistas. A UNESCO o reconhece como patrimônio cultural imaterial. Esse caso mostra uma tradição de conhecimento transmitida e praticada em contextos específicos.",
+        "Ifá não representa toda a África. Investigar uma tradição exige identificar comunidade, região, época e formas de transmissão. Não é adequado reunir experiências tão diversas sob a expressão “religião africana” como se fossem uma unidade."
+      ],
+      "sourceIndexes": [
+        0
+      ]
+    },
+    {
+      "title": "Povos originários: cosmologias no plural",
+      "paragraphs": [
+        "Na apresentação de Aracy Lopes da Silva, narrativas indígenas se articulam a rituais, organização social e modos próprios de pensar tempo, espaço e pessoa. “Mito”, nesse contexto, não é sinônimo de mentira: é uma categoria usada para estudar narrativas significativas para seus grupos.",
+        "Esta leitura oferece uma introdução comparativa, não a voz de todos os povos indígenas. Para aprofundar, identifique o povo e a autoria de cada relato; procure também materiais produzidos por suas próprias organizações. Não deduza a crença de uma pessoa apenas por sua identificação como indígena."
+      ],
+      "sourceIndexes": [
+        1
+      ]
+    },
+    {
+      "title": "Candomblé e Umbanda: aproximações e diferenças",
+      "paragraphs": [
+        "No estudo de Reginaldo Prandi, o Candomblé é situado historicamente na Bahia do século XIX. O autor também apresenta a formação da Umbanda no Rio de Janeiro no início do século XX, em relações com tradições afro-brasileiras, espiritismo, catolicismo e referências indígenas.",
+        "Essas trajetórias não tornam as duas religiões equivalentes. Prandi diferencia práticas de culto a divindades e consultas a entidades espirituais. A comparação é um ponto de partida: há variações entre casas e tradições, e os termos usados pelas próprias comunidades importam.",
+        "O artigo é uma interpretação sociológica publicada em 2004. Seus dados demográficos não descrevem o Brasil atual. Para números de pertencimento religioso, consulte a divulgação do Censo 2022 indicada adiante."
+      ],
+      "sourceIndexes": [
+        2
+      ]
+    },
+    {
+      "title": "Patrimônio: um caso situado na Bahia",
+      "paragraphs": [
+        "O parecer de Márcia Sant’Anna para o IPHAN, de 2024, examina o Terreiro Ilê Axé Icimimó Aganju Didê, em Cachoeira, Bahia. Sua introdução relaciona o processo ao reconhecimento do Terreiro da Casa Branca, em Salvador, quarenta anos antes.",
+        "Como atividade de leitura histórica, observe a diferença entre um documento de reconhecimento patrimonial e uma descrição completa da vida religiosa. O parecer ajuda a estudar políticas de preservação; não substitui os conhecimentos e as narrativas das comunidades."
+      ],
+      "sourceIndexes": [
+        3
+      ]
+    },
+    {
+      "title": "Brasil plural: o que os números dizem",
+      "paragraphs": [
+        "A divulgação dos resultados preliminares de religiões do Censo 2022 trata das declarações de pessoas com dez anos ou mais. Ela reúne Umbanda e Candomblé em uma categoria estatística e também apresenta pessoas sem religião. Uma categoria de pesquisa não torna duas tradições iguais nem descreve cada indivíduo.",
+        "Use o censo para investigar pertencimento declarado. Para compreender práticas, sentidos e mudanças, combine essa informação com estudos contextualizados e com as perspectivas das comunidades. Não confunda quantidade de declarações com valor de uma tradição."
+      ],
+      "sourceIndexes": [
+        4
+      ]
+    }
+  ],
+  "pause": "Escolha uma afirmação deste módulo. Qual fonte permite investigá-la? O que essa fonte deixa em aberto?",
+  "activity": {
+    "prompt": "Em seu caderno, compare Candomblé e Umbanda a partir do texto de Prandi. Registre uma diferença histórica, uma aproximação e uma pergunta que ainda depende de outras fontes. Não é preciso informar sua religião.",
+    "feedback": "Uma resposta possível distingue as trajetórias na Bahia do século XIX e no Rio de Janeiro do início do século XX, reconhece relações com heranças africanas e aponta a diversidade entre comunidades. O artigo de 2004 oferece uma interpretação histórica; sozinho, não representa todas as casas atuais."
   },
+  "sources": [
+    {
+      "title": "Ifa divination system",
+      "institution": "UNESCO · Patrimônio Cultural Imaterial",
+      "url": "https://ich.unesco.org/en/RL/ifa-divination-system-00146",
+      "scope": "Exemplo iorubá e formas de transmissão de Ifá. Página em inglês; o portal pode solicitar verificação de acesso."
+    },
+    {
+      "title": "Mitos e cosmologia",
+      "institution": "Aracy Lopes da Silva · Povos Indígenas no Brasil / Instituto Socioambiental",
+      "url": "https://pib.socioambiental.org/pt/Mitos_e_cosmologia",
+      "scope": "Introdução às relações entre narrativas, cosmologias e vida social; edição de textos de 1992 e 1995."
+    },
+    {
+      "title": "O Brasil com axé: candomblé e umbanda no mercado religioso (2004)",
+      "institution": "Reginaldo Prandi · Estudos Avançados / USP",
+      "url": "https://www.scielo.br/j/ea/a/tFh5DWhR8wWVWNsXL4Z9yxv/?lang=pt",
+      "scope": "Interpretação sociológica das trajetórias e transformações afro-brasileiras. Dados demográficos históricos, não atuais."
+    },
+    {
+      "title": "Parecer: Terreiro Ilê Axé Icimimó Aganju Didê, Cachoeira-BA (2024)",
+      "institution": "Márcia Sant’Anna · Conselho Consultivo do IPHAN",
+      "url": "https://www.gov.br/iphan/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/banco-de-pareceres/tombamento/parecer-terreiro-cachoeira-ba-conselheira-marcia-santanna.pdf",
+      "scope": "Página do IPHAN com parecer para download em PDF (cerca de 17 MB). Contextualiza reconhecimento patrimonial e o precedente da Casa Branca."
+    },
+    {
+      "title": "Censo 2022: evangélicos e sem religião crescem no País; católicos em queda",
+      "institution": "Agência Gov / EBC · conteúdo via IBGE, 06/06/2025",
+      "url": "https://agenciagov.ebc.com.br/noticias/202506/censo-2022-catolicos-seguem-em-queda-evangelicos-e-sem-religiao-crescem-no-pais",
+      "scope": "Republicação da divulgação dos resultados preliminares do IBGE. Recorte: pessoas com dez anos ou mais."
+    }
+  ]
+},
   {
     slug: "religiao-no-mundo-moderno",
     title: "Religião no mundo moderno",
     era: "1500–presente",
-    minutes: 30,
     summary: "Reformas, colonialismos, secularização, novos movimentos e um planeta plural.",
     opening: "A modernidade não eliminou a religião. Ela alterou instituições, autoridades, identidades e relações entre religião, Estado, ciência e mercado.",
     sections: [
@@ -126,7 +233,6 @@ export const modules: CourseModule[] = [
     slug: "ateismo-agnosticismo",
     title: "Ateísmo, agnosticismo e não religião",
     era: "Antiguidade–presente",
-    minutes: 25,
     summary: "Descrença, suspensão de juízo e vidas seculares em seus contextos históricos.",
     opening: "Não religião não é uma posição única. Ateísmo, agnosticismo, humanismo secular, indiferença e ausência de filiação respondem a perguntas diferentes.",
     sections: [
@@ -144,7 +250,6 @@ export const modules: CourseModule[] = [
     slug: "filosofia-da-religiao",
     title: "Filosofia da religião",
     era: "Perguntas em aberto",
-    minutes: 35,
     summary: "Razão, fé, linguagem, sofrimento, pluralidade e os limites do argumento.",
     opening: "A filosofia da religião não é catequese nem refutação automática. Ela examina conceitos, razões e experiências mobilizados por pessoas religiosas, agnósticas e ateias.",
     sections: [
@@ -163,4 +268,13 @@ export const modules: CourseModule[] = [
 
 export function getModule(slug: string) {
   return modules.find((module) => module.slug === slug);
+}
+
+/** Editorial estimates, not measured task times. External reading is optional. */
+export function getStudyPlan(module: CourseModule) {
+  const text = [module.opening, ...module.sections.flatMap((section) => [section.title, ...section.paragraphs, ...(section.points ?? [])]), ...(module.glossary ?? []).map((entry) => entry.definition)].join(" ");
+  const reading = Math.max(1, Math.ceil(text.trim().split(/\s+/u).length / 180));
+  const reflection = module.activity ? 10 : 5;
+  const sources = module.activity ? 15 : 10;
+  return { reading, reflection, sources, total: reading + reflection + sources };
 }

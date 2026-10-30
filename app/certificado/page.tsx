@@ -1,26 +1,17 @@
 "use client";
 
 import { Award, CheckCircle2, Download, LockKeyhole } from "lucide-react";
-import { FormEvent, useEffect, useState } from "react";
-import Link from "next/link";
+import { FormEvent, useState } from "react";
+import { useCompletedModules } from "../components/trail-progress";
 import { CourseHeader } from "../components/course-header";
 import { SiteFooter } from "../components/site-footer";
 import { modules } from "../course-data";
 
-const STORAGE_KEY = "atlas-completed-modules";
+
 
 export default function CertificatePage() {
-  const [completed, setCompleted] = useState<string[]>([]);
+  const completed = useCompletedModules();
   const [name, setName] = useState("");
-  useEffect(() => {
-    const timer = window.setTimeout(() => {
-      try {
-        const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "[]");
-        setCompleted(Array.isArray(parsed) ? parsed : []);
-      } catch { setCompleted([]); }
-    }, 0);
-    return () => window.clearTimeout(timer);
-  }, []);
   const ready = modules.every((module) => completed.includes(module.slug));
 
   function download(event: FormEvent) {
@@ -32,18 +23,19 @@ export default function CertificatePage() {
   return (
     <div className="site-shell">
       <CourseHeader />
-      <main className="certificate-page">
+      <main id="conteudo" tabIndex={-1} className="certificate-page">
         <div className="certificate-status">
           <span className="certificate-seal">{ready ? <Award aria-hidden="true" /> : <LockKeyhole aria-hidden="true" />}</span>
           <p className="eyebrow">Certificado simbólico</p>
           <h1>{ready ? "Trilha percorrida." : "Ainda há páginas no caminho."}</h1>
-          <p>{ready ? "Você abriu os oito módulos deste curso. Agora pode registrar simbolicamente esse percurso." : `Seu navegador registra ${completed.filter((slug) => modules.some((module) => module.slug === slug)).length} de ${modules.length} módulos visitados.`}</p>
+          <p>{ready ? "Você confirmou a conclusão dos oito módulos. Este certificado registra sua declaração, sem avaliação de aprendizagem." : `Seu navegador registra ${completed.filter((slug) => modules.some((module) => module.slug === slug)).length} de ${modules.length} módulos com conclusão confirmada.`}</p>
         </div>
 
+        <p>Leia cada módulo e use o botão de conclusão ao final. O progresso fica neste navegador e pode ser perdido ao limpar os dados locais.</p>
         <ol className="completion-list">
           {modules.map((module, index) => {
             const done = completed.includes(module.slug);
-            return <li key={module.slug} className={done ? "done" : ""}><span>{done ? <CheckCircle2 aria-hidden="true" /> : String(index + 1).padStart(2, "0")}</span><Link href={`/modulos/${module.slug}`}>{module.title}</Link></li>;
+            return <li key={module.slug} className={done ? "done" : ""}><span>{done ? <CheckCircle2 aria-hidden="true" /> : String(index + 1).padStart(2, "0")}</span><a href={`/modulos/${module.slug}`}>{module.title} — {done ? "concluído" : "pendente"}</a></li>;
           })}
         </ol>
 

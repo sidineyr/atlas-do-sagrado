@@ -1,5 +1,5 @@
 import { Code2, ContactRound, Newspaper } from "lucide-react";
-import Link from "next/link";
+
 
 export function SiteFooter({ compact = false }: { compact?: boolean }) {
   return (
@@ -13,7 +13,7 @@ export function SiteFooter({ compact = false }: { compact?: boolean }) {
         <a href="https://www.linkedin.com/in/sidineyrodrigues" target="_blank" rel="noreferrer"><ContactRound aria-hidden="true" size={16} />LinkedIn</a>
         <a href="https://sidineyr.substack.com" target="_blank" rel="noreferrer"><Newspaper aria-hidden="true" size={16} />Substack</a>
         <a href="https://sidineyr.github.io/" target="_blank" rel="noreferrer">Outros projetos educacionais</a>
-        <Link href="/creditos">Créditos e fontes</Link>
+        <a href="/creditos">Créditos e fontes</a>
       </nav>
     
       <p style={{ width: '100%', marginTop: '0.65rem', fontSize: '0.75rem', lineHeight: 1.5, opacity: 0.72 }}>

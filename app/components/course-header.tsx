@@ -1,23 +1,26 @@
 import { Menu } from "lucide-react";
-import Link from "next/link";
+
 
 export function CourseHeader() {
   return (
+    <>
+    <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
     <header className="course-header">
-      <Link className="brand" href="/" aria-label="Atlas do Sagrado — início">
+      <a className="brand" href="/" aria-label="Atlas do Sagrado — início">
         <span className="brand-mark" aria-hidden="true">✦</span>
         <span><strong>Atlas</strong> do Sagrado</span>
-      </Link>
+      </a>
       <nav aria-label="Navegação principal">
-        <Link href="/#percurso">Módulos</Link>
-        <Link href="/certificado">Certificado</Link>
-        <Link href="/#method-title">Método</Link>
-        <Link href="/creditos">Créditos</Link>
+        <a href="/#percurso">Módulos</a>
+        <a href="/certificado">Certificado</a>
+        <a href="/#method-title">Método</a>
+        <a href="/creditos">Créditos</a>
       </nav>
       <details className="mobile-menu">
         <summary aria-label="Abrir menu"><Menu aria-hidden="true" size={22} /></summary>
-        <div><Link href="/#percurso">Módulos</Link><Link href="/certificado">Certificado</Link><Link href="/#method-title">Método</Link><Link href="/creditos">Créditos</Link></div>
+        <div><a href="/#percurso">Módulos</a><a href="/certificado">Certificado</a><a href="/#method-title">Método</a><a href="/creditos">Créditos</a></div>
       </details>
     </header>
+    </>
   );
 }

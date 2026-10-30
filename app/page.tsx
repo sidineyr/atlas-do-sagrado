@@ -1,21 +1,23 @@
 import type { Metadata } from "next";
-import { ArrowRight, BookOpen, Clock3, Compass, Eye, ScrollText } from "lucide-react";
+import { ArrowRight, BookOpen, Compass, Eye, ScrollText } from "lucide-react";
 import { CourseHeader } from "./components/course-header";
 import { ViewCounter } from "./components/view-counter";
 import { CertificateInvitation } from "./components/trail-progress";
 import { SiteFooter } from "./components/site-footer";
-import { modules } from "./course-data";
+import { ModuleCatalog } from "./components/module-catalog";
+import { modules, getStudyPlan } from "./course-data";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 export default function Home() {
+  const studyMinutes = modules.reduce((sum, module) => sum + getStudyPlan(module).total, 0);
   return (
     <div className="site-shell">
       <CourseHeader />
-      <main>
+      <main id="conteudo" tabIndex={-1}>
         <section className="intro-grid" aria-labelledby="course-title">
           <div className="intro-copy">
-            <p className="eyebrow">MOOC aberto · leitura autônoma</p>
+            <p className="eyebrow">Curso aberto e gratuito · leitura autônoma</p>
             <h1 id="course-title">História das religiões sem atalhos fáceis.</h1>
             <p className="lead">
               Um percurso introdutório para compreender como seres humanos criaram,
@@ -32,10 +34,10 @@ export default function Home() {
           <aside className="course-note" aria-label="Como estudar">
             <Compass aria-hidden="true" size={24} />
             <h2>Como estudar</h2>
-            <p>Leia na ordem sugerida ou escolha um tema. Não há prova nem prazo.</p>
+            <p>Leia na ordem sugerida ou escolha um tema. Não há prova nem prazo. As estimativas incluem reflexão e leitura opcional das fontes.</p>
             <dl>
               <div><dt>Formato</dt><dd>8 módulos</dd></div>
-              <div><dt>Duração</dt><dd>≈ 4 horas</dd></div>
+              <div><dt>Duração</dt><dd>≈ {studyMinutes} min de estudo</dd></div>
               <div><dt>Nível</dt><dd>Introdutório</dd></div>
             </dl>
           </aside>
@@ -55,22 +57,8 @@ export default function Home() {
             </div>
             <p>O mapa começa com evidências incompletas e termina com questões ainda abertas.</p>
           </div>
-          <ol className="module-list">
-            {modules.map((module, index) => (
-              <li key={module.slug}>
-                <a className="module-card" href={`/modulos/${module.slug}`}>
-                  <span className="module-number">{String(index + 1).padStart(2, "0")}</span>
-                  <span className="module-body">
-                    <span className="module-era">{module.era}</span>
-                    <strong>{module.title}</strong>
-                    <span>{module.summary}</span>
-                  </span>
-                  <span className="module-time"><Clock3 aria-hidden="true" size={15} />{module.minutes} min</span>
-                  <ArrowRight className="module-arrow" aria-hidden="true" size={20} />
-                </a>
-              </li>
-            ))}
-          </ol>
+          <ModuleCatalog />
+
         </section>
 
         <section className="method-note" aria-labelledby="method-title">

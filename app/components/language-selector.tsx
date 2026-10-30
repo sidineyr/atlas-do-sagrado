@@ -12,5 +12,5 @@ export function LanguageSelector() {
     if (window.google?.translate) window.googleTranslateElementInit();
     else if (!document.querySelector("script[data-project-translate]")) { const script=document.createElement("script"); script.src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"; script.async=true; script.dataset.projectTranslate="true"; document.head.appendChild(script); }
   }, []);
-  return <aside aria-label="Language / Idioma" style={{position:"fixed",right:12,top:12,zIndex:1000,border:"1px solid rgba(255,255,255,.18)",borderRadius:999,padding:"8px 12px",background:"rgba(12,17,25,.92)",boxShadow:"0 8px 30px rgba(0,0,0,.2)"}}><strong style={{marginRight:8,fontSize:12,color:"white"}}>PT / EN</strong><span id="google_translate_element" /></aside>;
+  return <aside aria-label="Language / Idioma" className="language-bar"><strong style={{marginRight:8,fontSize:12,color:"var(--ink)"}}>PT / EN</strong><span id="google_translate_element" /></aside>;
 }

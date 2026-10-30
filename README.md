@@ -15,7 +15,7 @@ MOOC aberto em português sobre história das religiões, não religião e filos
 7. Ateísmo, agnosticismo e não religião
 8. Filosofia da religião
 
-O curso é introdutório, não confessional e autoinstrucional. Não há prova nem prazo. Cada página contabiliza uma leitura por sessão sem armazenar dados pessoais. Ao visitar os oito módulos, o navegador libera um certificado gratuito e simbólico em PDF, sem equivalência acadêmica ou profissional.
+O curso é introdutório, não confessional e autoinstrucional. Não há prova nem prazo. Cada página contabiliza uma leitura por sessão sem armazenar dados pessoais. Ao confirmar explicitamente a conclusão dos oito módulos, o navegador libera um certificado gratuito e simbólico em PDF, sem equivalência acadêmica ou profissional.
 
 ## Método e fontes
 
@@ -39,4 +39,24 @@ O contador de leituras usa Cloudflare D1 em produção. A emissão do certificad
 
 ## Versão
 
-Release atual: `v1.1.0` — certificado simbólico, progresso local, créditos editoriais e documentação ampliada.
+A revisão pedagógica e de UX de 29/10/2026 está documentada em [docs/revisao-ux-2026-10-29.md](docs/revisao-ux-2026-10-29.md).
+
+## Estudo e progresso
+
+- A busca na página inicial consulta títulos e conteúdo, sem distinguir acentos.
+- Todos os módulos apresentam estimativas editoriais separadas de leitura, reflexão e aprofundamento opcional. A leitura usa uma referência de 180 palavras por minuto; os demais tempos são sugestões, não medições de usuários.
+- O módulo 05 inclui objetivos, glossário, exemplos, atividade com resposta possível e referências por seção.
+- Abrir uma página não registra conclusão. O botão ao final permite confirmar ou desmarcar.
+- O progresso confirmado fica em `atlas-confirmed-modules-v2`. O registro antigo de visitas é preservado, mas não convertido em conclusão.
+- O certificado é simbólico e baseado na declaração do aluno; não verifica aprendizagem e não exige login.
+- Navegação e leitura usam HTML acessível sem depender da hidratação. Busca e progresso exigem JavaScript.
+
+## Verificação
+
+```bash
+pnpm test:ux
+pnpm exec tsc --noEmit
+pnpm build
+```
+
+Os testes cobrem dados de progresso inválidos, visitas legadas, falhas de armazenamento, busca sem acentos e integridade de referências. O roteiro manual e suas limitações constam na revisão de UX.
